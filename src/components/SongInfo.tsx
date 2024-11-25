@@ -14,8 +14,8 @@ const SongInfo = ({track} : SongInfoProps) => {
         <Text style={styles.artist}>{track?.artist} . {track?.album}</Text>
         </View>
     </View>
-  )
-}
+  );
+};
 
 export default SongInfo;
 

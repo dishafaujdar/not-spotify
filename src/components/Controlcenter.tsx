@@ -1,11 +1,12 @@
 import React from 'react'; 
 import { Pressable, StyleSheet, View } from 'react-native';
-import TrackPlayer, { usePlaybackState , State } from 'react-native-track-player';
+import TrackPlayer, { usePlaybackState , State , PlaybackState  } from 'react-native-track-player';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function Controlcenter() {
 
-    const playBackState = usePlaybackState();
+    // const playBackState = usePlaybackState();
+    const playBackState: PlaybackState | { state: undefined } = usePlaybackState();
 
     const skiptonext = async () => {
         await TrackPlayer.skipToNext();
@@ -27,14 +28,15 @@ export default function Controlcenter() {
         }
     };
 
+    const currentState = playBackState.state ?? State.None;
 
   return (
     <View style={styles.container}>
         <Pressable onPress={skiptoPrevious}>
             <Icon style = {styles.icon} name = "skip-previous" size={40}/>
         </Pressable>
-        <Pressable onPress={() => togglePlayback(playBackState)}>
-            <Icon style = {styles.icon} name = {playBackState === State.Playing ? 'paused' : 'play-arrow'} size={75}/>
+        <Pressable onPress={() => togglePlayback(currentState)}>
+            <Icon style = {styles.icon} name = {currentState === State.Playing ? 'paused' : 'play-arrow'} size={75}/>
         </Pressable>
         <Pressable onPress={skiptonext}>
             <Icon style = {styles.icon} name = "skip-next" size={40}/>

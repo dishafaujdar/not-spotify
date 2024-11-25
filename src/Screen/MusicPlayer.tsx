@@ -1,8 +1,6 @@
 import { Dimensions, FlatList, Image , StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
-import TrackPlayer, { Event , Track , useTrackPlayerEvents } from 'react-native-track-player';
-
-
+import TrackPlayer, {Event , Track , useTrackPlayerEvents}  from 'react-native-track-player';
 import { playListData } from '../constants';
 import SongInfo from '../components/SongInfo';
 import Controlcenter from '../components/Controlcenter';
@@ -12,16 +10,13 @@ const {width} = Dimensions.get('window');
 
 const MusicPlayer = () => {
 
-    const [track , setTrack] = useState<Track | null>();
+    const [track , setTrack] = useState<Track | undefined>();
 
     useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], async event => {
-        if (event.type === Event.PlaybackActiveTrackChanged && event.nextTrack !== null) {
-            try {
-                const playingTrack = await TrackPlayer.getTrack(event.nextTrack);
-                setTrack(playingTrack);
-            } catch (error) {
-                console.error('Error fetching track:', error);
-            }
+        if (event.index !== undefined)
+        {
+            const playingTrack = await TrackPlayer.getTrack(event.index);
+            setTrack(playingTrack);
         }
     });
 
@@ -29,8 +24,8 @@ const MusicPlayer = () => {
         return(
             <View style={styles.listArtWrapper}>
                 <View style={styles.albumContainer}>
-                    (track ?.artwork && (
-                        <Image 
+                    (track?.artwork && (
+                        <Image
                         style={styles.albumArtImg}
                         source={{uri: track?.artwork?.toString()}}/>
                     ))
